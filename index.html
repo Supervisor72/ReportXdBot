@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Invio Dati Punto Vendita</title>
+  <style>
+    body { font-family: Arial; padding: 2rem; max-width: 500px; margin: auto; }
+    label, select, input { display: block; margin: 10px 0; width: 100%; }
+    button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+  <h2>Invio Dati Giornalieri</h2>
+  <form id="dataForm">
+    <label for="store">Punto Vendita</label>
+    <select id="store" required>
+      <option value="">-- Seleziona --</option>
+      <option>Fano</option>
+      <option>Monsano</option>
+      <option>Osimo</option>
+      <option>Macerata</option>
+      <option>Civitanova</option>
+      <option>Pesaro</option>
+    </select>
+
+    <label for="sales">Venduto (€)</label>
+    <input type="number" id="sales" required>
+
+    <label for="incidence">Incidenza (%)</label>
+    <input type="number" step="0.1" id="incidence" required>
+
+    <button type="submit">Invia</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script>
+    document.getElementById("dataForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const store = document.getElementById("store").value;
+      const sales = document.getElementById("sales").value;
+      const incidence = document.getElementById("incidence").value;
+
+      fetch("https://script.google.com/macros/s/PASTE_YOUR_SCRIPT_URL_HERE/exec", {
+        method: "POST",
+        body: JSON.stringify({ store, sales, incidence }),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(msg => document.getElementById("status").textContent = msg)
+      .catch(err => alert("Errore invio: " + err));
+    });
+  </script>
+</body>
+</html>
